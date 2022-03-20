@@ -1,58 +1,133 @@
-var dice = {
-   	faceValues: [1,2,3,4,5,6],
-    noFaces: 6,
-    playerRolling: 'player1',
-    roll: function() {// randomly selects integer from facevalues
-    },
-    passDice: function() {// passes dice to next player 
-    } 
-};
-
 var arr = {
-	"name": "snake_lader_Positions",
-	"boardPosition": [
-		{
-			"position": 3,
-			"moveTo": 15		
-		},
-		{
-			"position": 8,
-			"moveTo": 2		
-		},
-		{
-			"position": 11,
-			"moveTo": 9		
-		},
-		{
-			"position": 12,
-			"moveTo": 20		
-		},
-		{
-			"position": 30,
-			"moveTo": 10		
-		},
-		{
-			"position": 45,
-			"moveTo": 55		
-		},
-		{
-			"position": 60,
-			"moveTo": 75		
-		}											
-	]
-};
-var snakesArr = [];
-var laddersArr = [];
-var board = arr.boardPosition;
-var boardLength = board.length
-for (var i = 0; i < boardLength; i++) {
-    console.log(board[i]);
-    if (arr.boardPosition[i].position > arr.boardPosition[i].moveTo) {
-    console.log("snake");
-    snakesArr.push("ladder");
-		} else {
-		console.log("ladder");
-    laddersArr.push("ladder");
-		}  
+   "name": "snake_lader_Positions",
+   "boardPosition": [{
+       "position": 3,
+       "moveTo": 15
+     },
+     {
+       "position": 8,
+       "moveTo": 2
+     },
+     {
+       "position": 11,
+       "moveTo": 9
+     },
+     {
+       "position": 12,
+       "moveTo": 20
+     },
+     {
+       "position": 30,
+       "moveTo": 10
+     },
+     {
+       "position": 45,
+       "moveTo": 55
+     },
+     {
+       "position": 60,
+       "moveTo": 75
+     }
+   ]
+ };
+
+ var snakeOrLadder = [];
+ var board = arr.boardPosition;
+ var boardLength = board.length
+ var player1Positions = [0];
+ var player2Positions = [0];
+ var input = prompt('Enter your name')
+ var gameWon = false 
+
+ // Player object template 
+ function Player(name, position) {
+   this.name = name;
+   this.position = position;
+ }
+
+ var player1 = new Player(input, playTurn1(player1Positions[player1Positions.length - 1]));
+ var player2 = new Player('Computer', playTurn2(player2Positions[player2Positions.length - 1]));
+
+ for (var i = 0; i < boardLength; i++) {
+
+   if (arr.boardPosition[i].position > arr.boardPosition[i].moveTo) {
+     snakeOrLadder.push("snake");
+
+   } else {
+     snakeOrLadder.push("ladder");
+
+   }
+ }
+
+ // rollDice function definition 
+ function rollDice() {
+   const roll = Math.floor(Math.random() * (7 - 1)) + 1;
+   return roll
+ }
+
+ // playTurn1 function definition 
+ function playTurn1(currentPosition1) {
+   // this rolls the dice
+
+   roll = rollDice();
+   tempPosition = roll + currentPosition1;
+   // this tests if you've rolled past 100 and takes you back to your original position if you have
+   if (tempPosition > 100) {
+     console.log(input, " rolled a ", roll, ". You've landed on ", tempPosition, "that's past 100. Go back to ", currentPosition1);
+     tempPosition = currentPosition1
+   } else {
+     console.log(input, " rolled a ", roll, ". You've landed on ", tempPosition);
+   }
+   // this checks for snakes or ladders and moves you.
+   for (var i = 0; i < boardLength; i++) {
+     if (tempPosition == board[i].position) {
+       tempPosition = board[i].moveTo;
+       console.log(input, " landed on a", snakeOrLadder[i], ". Move to ", tempPosition)
+       currentPosition1 = tempPosition;
+     } else {
+       currentPosition1 = tempPosition;
+     }
+
+   }
+   player1Positions.push(currentPosition1);
+   return currentPosition1;
+ }
+ // playTurn2 function definition 
+ function playTurn2(currentPosition2) {
+   // this rolls the dice
+   roll = rollDice();
+   tempPosition = roll + currentPosition2;
+   // this tests if you've rolled past 100 and takes you back to your original position if you have
+   if (tempPosition > 100) {
+     console.log("Computer rolled a ", roll, ". You've landed on ", tempPosition, "that's past 100. Go back to ", currentPosition2);
+     tempPosition = currentPosition2
+   } else {
+     console.log("Computer rolled a ", roll, ". You've landed on ", tempPosition);
+   }
+   // this checks for snakes or ladders and moves you.
+   for (var i = 0; i < boardLength; i++) {
+     if (tempPosition == board[i].position) {
+       tempPosition = board[i].moveTo;
+       console.log("Computer landed on a", snakeOrLadder[i], ". Move to ", tempPosition)
+       currentPosition2 = tempPosition;
+     } else {
+       currentPosition2 = tempPosition;
+     }
+
+   }
+   player2Positions.push(currentPosition2);
+   return currentPosition2;
+ }
+
+while (gameWon == false){
+ if (playTurn1(player1Positions[player1Positions.length - 1]) == 100) {
+   console.log(player1.name, " wins!");
+   gameWon = true;
+ } else if (playTurn2(player2Positions[player2Positions.length - 1]) == 100) {
+   console.log(player2.name, " wins!");
+   gameWon = true;
+ } else {
+ 	gameWon = false;
+ }
 }
-console.log("There are ", laddersArr.length, " ladders and ", snakesArr.length, "snakes on this board.");
+
