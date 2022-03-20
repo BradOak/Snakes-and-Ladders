@@ -1,0 +1,58 @@
+var dice = {
+   	faceValues: [1,2,3,4,5,6],
+    noFaces: 6,
+    playerRolling: 'player1',
+    roll: function() {// randomly selects integer from facevalues
+    },
+    passDice: function() {// passes dice to next player 
+    } 
+};
+
+var arr = {
+	"name": "snake_lader_Positions",
+	"boardPosition": [
+		{
+			"position": 3,
+			"moveTo": 15		
+		},
+		{
+			"position": 8,
+			"moveTo": 2		
+		},
+		{
+			"position": 11,
+			"moveTo": 9		
+		},
+		{
+			"position": 12,
+			"moveTo": 20		
+		},
+		{
+			"position": 30,
+			"moveTo": 10		
+		},
+		{
+			"position": 45,
+			"moveTo": 55		
+		},
+		{
+			"position": 60,
+			"moveTo": 75		
+		}											
+	]
+};
+var snakesArr = [];
+var laddersArr = [];
+var board = arr.boardPosition;
+var boardLength = board.length
+for (var i = 0; i < boardLength; i++) {
+    console.log(board[i]);
+    if (arr.boardPosition[i].position > arr.boardPosition[i].moveTo) {
+    console.log("snake");
+    snakesArr.push("ladder");
+		} else {
+		console.log("ladder");
+    laddersArr.push("ladder");
+		}  
+}
+console.log("There are ", laddersArr.length, " ladders and ", snakesArr.length, "snakes on this board.");
